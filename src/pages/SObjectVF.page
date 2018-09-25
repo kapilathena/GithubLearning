@@ -1,0 +1,23 @@
+<apex:page sidebar="false" showHeader="false" controller="SObjectFieldController">
+    
+    
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+            <tr class="slds-line-height_reset">
+                
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Contact">Contact</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="slds-hint-parent">
+                
+                <td data-label="Contact">
+                    <div class="slds-truncate" title="jrogers@cloudhub.com"><a href="javascript:void(0);" tabindex="-1">jrogers@cloudhub.com</a></div>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+</apex:page>

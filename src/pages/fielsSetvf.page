@@ -1,0 +1,100 @@
+<apex:page Controller="fieldSetController">
+    <apex:includeScript value="{!$Resource.handleBarJS}"/>
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"/> 
+    <apex:slds />
+    <html>
+			<div id="toPrint"></div>
+		<script id="handlerId" type="text/x-handlebars-template">
+			<div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-3">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="select-01">Select Label</label>
+                            <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                    <select class="slds-select" id="Sobj" onChange="sendSobject($('#Sobj').val());">
+                                        <option value="">Please select Sobject</option>
+                                        <option>Account</option>
+                                        <option>Contact</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_2-of-3">
+                        <div id="printTable"></div>
+                    </div>
+        	</div>
+		</script>
+        <script id="table" type="text/x-handlebars-template">
+        	 <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                       {{#each objectData.fieldList}} 
+                        <th class="slds-text-title_caps" scope="col">
+                            <div class="slds-truncate" title="Contact">{{this}}</div>
+                        </th>
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody>
+                     {{#each objectData.sobjList}}       
+                    <tr class="slds-hint-parent">
+
+                        <td data-label="Contact">
+                      <div class="slds-truncate" >hi{{LastName}}</div> 
+
+                        </td>
+
+                    </tr>
+                      {{/each}}
+                </tbody>
+            </table> 
+                      <div>{{#each objectData.fieldList}} 
+                                 <div>{{this}}</div>
+                              {{/each}}
+                           {{#each objectData.sobjList}} 	
+                          	
+						 			
+                                     <div>{{this}}</div>
+
+						   {{/each}} 
+                       </div>
+        </script>
+		
+		<script type= "text/javascript">
+		var quoteData = document.getElementById("handlerId").innerHTML;
+		var template = Handlebars.compile(quoteData);
+		var finalData = template({
+			
+		}); 	
+		document.getElementById("toPrint").innerHTML = finalData;
+		
+        function sendSobject(Sobj){
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.fieldSetController.fatchFieldSetData}',
+                Sobj,
+                function(result, event){
+                  if (event.status) {
+                        ResultData=result;
+                       console.log(ResultData);
+                      var data = document.getElementById("table").innerHTML;
+                        var temp = Handlebars.compile(data);
+                        var resultData = temp({
+                            objectData : ResultData
+                        }); 
+                      //console.log(resultData);
+                        document.getElementById("printTable").innerHTML = resultData;
+                  } else if (event.type === 'exception') {
+                      document.getElementById("responseErrors").innerHTML = 
+                          event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                  } else {
+                      document.getElementById("responseErrors").innerHTML = event.message;
+                  }$
+              }, 
+              {escape: true}
+             ); 
+        }
+	</script>
+	</html>
+	
+</apex:page>

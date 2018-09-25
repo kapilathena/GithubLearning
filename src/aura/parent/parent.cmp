@@ -1,0 +1,5 @@
+<aura:component >
+    <c:child/>
+    <aura:attribute name="par" type="string"/>
+    <aura:handler name="RegEvName" event="c:childEvent" action="{!c.parAction}"/>	
+</aura:component>

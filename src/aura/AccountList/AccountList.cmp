@@ -1,0 +1,55 @@
+<aura:component controller="AccountFatch" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:attribute name="AccList" type="account[]" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <aura:handler Event="c:temp" value="{!this}" action="{!c.doInit}"/>
+    <aura:registerEvent type="c:ContactListPageAppEvent" name="reg"/>
+    <aura:registerEvent type="c:temp" name="regn"/>
+     <div class="demo-only" style="padding: 0.5rem; background: rgb(22, 50, 92);">
+            <div class="slds-text-color_inverse slds-text-heading_large slds-text-align_center">Contact Detail</div>
+        </div>
+    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Opportunity Name">FirstName</div>
+                </th>
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Opportunity Name">LastName</div>
+                </th>
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Account Name">Title</div>
+                </th>
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Account Name">Phone</div>
+                </th>
+                <th class="slds-text-title_caps" scope="col">
+                    <div class="slds-truncate" title="Account Name">Action</div>
+                </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.AccList}" var="tList"> 
+                <tr class="slds-hint-parent">
+                     <td data-label="Account Name">
+                        <div class="slds-truncate" title="Cloudhub">{!tList.FirstName}</div>
+                    </td>
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title="Cloudhub">{!tList.LastName}</div>
+                    </td>
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title="Cloudhub">{!tList.Title}</div>
+                    </td>
+                    <td data-label="Account Name">
+                        <div class="slds-truncate" title="Cloudhub">{!tList.Phone}</div>
+                    </td>
+                    <td> 
+                    	<lightning:button label="Edit" class="slds-m-top--medium prodclass" variant="brand" onclick="{!c.eventAction}" value ="{!tList.Id}"/>
+                    </td>
+                   
+                    
+                </tr>
+            </aura:iteration>     
+        </tbody>
+    </table>
+</aura:component>

@@ -1,0 +1,8 @@
+<aura:component >
+	<aura:registerEvent name="RegEvName" type="c:childEvent"/>
+ 
+    <lightning:button label="Click" 
+                             class="slds-m-top--medium"
+                             variant="brand"
+                            onclick="{!c.eventAction}"/>
+</aura:component>

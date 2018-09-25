@@ -1,0 +1,225 @@
+<aura:component controller="EmailController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <ltng:require scripts="{!$Resource.jQuery}" />
+    <ltng:require scripts="{!$Resource.Awesome}" />
+    <ltng:require scripts="{!$Resource.Awesome2}" />
+    <aura:attribute name="showChild" type="boolean" default="false"/>
+    <aura:attribute name="isSent" type="boolean" default="true"/>
+    <aura:attribute name="EmailToEdit" type="string"/>
+    <aura:attribute name="RecordSendId" type="string" default=""/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="obj" type="Email__c" default="{'sobjectType':'Email__c','Recipient__c':'','Subject__c':'','CreatedDate':''}" />
+    <div id="detailPage">
+        <form class="slds-form--stacked" onClick="{!editRecord}">
+            <fieldset class="slds-box slds-theme--default slds-container--small">
+                <div class="slds-button-group" role="group">
+                    
+                    <button type="button" class="slds-button" onclick="{!c.composeEvent}">
+                        <lightning:icon iconName="utility:new" size="medium" title="compose" alternativeText="ComposeMail"/>
+                    </button>
+                    <div style="width: 85px;height: 30px;">
+                    	<lightning:button label="All Mails" 
+                                 class="slds-button slds-button_brand"
+                                 onclick="{!c.allMail}"/>
+                    </div>
+                    <button type="button" class="slds-button" onclick="{!c.sentMail}">
+                        <lightning:icon iconName="utility:trending" size="medium" title="sent" alternativeText="ComposeMail"/>
+                    </button>
+                    <button type="button" class="slds-button" onclick="{!c.draftDetails}">
+                        <lightning:icon iconName="utility:edit" size="medium" alternativeText="ComposeMail"/>
+                    </button>
+                    <button type="button" class="slds-button" onclick="{!c.Del}">
+                        <lightning:icon iconName="utility:delete" size="medium" alternativeText="ComposeMail"/>
+                    </button>
+                    
+                    <lightning:input type="search"/>
+                </div>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <div  onClick = "{!editRecord}">
+                            <tr class="slds-line-height_reset">
+                                <th>
+                                    <div class="slds-truncate" title="Cloudhub"><input type="checkbox"/></div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Opportunity Name">Email</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account Name">Subject</div>
+                                </th>
+                                <th class="slds-text-title_caps" scope="col">
+                                    <div class="slds-truncate" title="Account Name">Modified Date</div>
+                                </th>
+                                
+                            </tr>
+                        </div>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.obj}" var="tList">
+                            <div id="tableRow" onclick="{!c.EditMail}" value="{!tList}" data-text="{!tList.Id}">
+                                <tr class="slds-hint-parent">
+                                    <aura:if isTrue="{!(v.isSent == true)}" >
+                                        <td>
+                                            <div class="slds-truncate" title="Cloudhub"><input type="Checkbox" value="{!tList.Id}" name="chk" data-text="{!tList.Id}"/></div>
+                                        </td>
+                                        <td data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub"><a href="javascript:void(0);"  onClick = "{!editRecord}" tabindex="-1">{!tList.Recipient__c}</a></div>
+                                        </td>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate" title="Cloudhub">{!tList.Subject__c}</div>
+                                        </td>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate" title="Cloudhub">{!tList.CreatedDate}</div>
+                                        </td>
+                                        
+                                        <aura:set attribute="else">
+                                            
+                                            <th data-label="Opportunity Name" scope="row">
+                                                <div class="slds-truncate" title="Cloudhub"><a href="javascript:void(0);" tabindex="-1">{!tList.Recipient__c}</a></div>
+                                            </th>
+                                            <td data-label="Account Name">
+                                                <div class="slds-truncate" title="Cloudhub">{!tList.Subject__c}</div>
+                                            </td>
+                                            <td data-label="Account Name">
+                                                <div class="slds-truncate" title="Cloudhub">{!tList.CreatedDate}</div>
+                                            </td>
+                                            
+                                        </aura:set>
+                                    </aura:if>
+                                    
+                                    
+                                </tr>
+                            </div>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+    
+    <div id="composePage">
+        <form class="slds-form--stacked">
+            <fieldset class="slds-box slds-theme--default slds-container--small">
+                <aura:if isTrue="{!v.newEmail.isRecieved__c}">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Selected Email</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea" disabled="true"></textarea>
+                        </div>
+                    </div>
+                    <lightning:input aura:id="expenseform1" label="Send To"
+                                     name="Send To"
+                                     value="{!v.newEmail.receivedFrom__c}"
+                                     disabled="{!true}"/> 
+                    <lightning:input aura:id="expenseform" label="Subject"
+                                     name="Subject"
+                                     value="{!v.newEmail.Subject__c}"
+                                     disabled="{!true}"/> 
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Message</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea" disabled="true">{!v.newEmail.Body__c}</textarea>
+                        </div>
+                    </div>
+                    <button type="button" onclick="alert('Hello world!')">Choose Files</button><div class="slds-text-body_regular">No File Choosen</div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Selected Files</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea" disabled="true"></textarea>
+                        </div>
+                    </div>
+                    <lightning:button label="Send" 
+                                      class="slds-button slds-button_brand"
+                                      disabled="{!true}"  onclick="{!c.SendEmail}"/> 
+                    <lightning:button label="Delete" 
+                                      class="slds-button slds-button_destructive"
+                                      onclick="{!c.deleteEmail}"/> 
+                    <lightning:button label="Cancel" 
+                                      class="slds-button slds-button_outline-brand"
+                                      
+                                      onclick="{!c.cancelEmail}"/>
+                </aura:if>
+                <aura:if isTrue="{!v.newEmail.sentStatus__c}">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Selected Email</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea " disabled="true"></textarea>
+                        </div>
+                    </div>
+                    <lightning:input aura:id="expenseform1" label="Send To"
+                                     name="Send To"
+                                     value="{!v.newEmail.Recipient__c}"
+                                     disabled="{!true}"/> 
+                    <lightning:input aura:id="expenseform" label="Subject"
+                                     name="Subject"
+                                     value="{!v.newEmail.Subject__c}"
+                                     disabled="{!true}"/> 
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Message</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea" disabled="true">{!v.newEmail.Body__c}</textarea>
+                        </div>
+                    </div>
+                    <button type="button" onclick="alert('Hello world!')">Choose Files</button><div class="slds-text-body_regular">No File Choosen</div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Selected Files</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea" disabled="true"></textarea>
+                        </div>
+                    </div>
+                    <lightning:button label="Send" 
+                                      class="slds-button slds-button_brand"
+                                      onclick="{!c.SendEmail}"/> 
+                    <lightning:button label="Delete" 
+                                      class="slds-button slds-button_destructive"
+                                      onclick="{!c.deleteEmail}"/> 
+                    <lightning:button label="Cancel" 
+                                      class="slds-button slds-button_outline-brand"
+                                      
+                                      onclick="{!c.cancelEmail}"/>
+                </aura:if>
+                <aura:if isTrue="{!v.newEmail.isDraft__c}">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Selected Email</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea"></textarea>
+                        </div>
+                    </div>
+                    <lightning:input aura:id="expenseform1" label="Send To"
+                                     name="Send To"
+                                     value="{!v.newEmail.Recipient__c}"
+                                     /> 
+                    <lightning:input aura:id="expenseform" label="Subject"
+                                     name="Subject"
+                                     value="{!v.newEmail.Subject__c}"
+                                     /> 
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Message</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea">{!v.newEmail.Body__c}</textarea>
+                        </div>
+                    </div>
+                    <button type="button" onclick="alert('Hello world!')">Choose Files</button><div class="slds-text-body_regular">No File Choosen</div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="textarea-id-01">Selected Files</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="textarea-id-01" class="slds-textarea"></textarea>
+                        </div>
+                    </div>
+                    <lightning:button label="Send" 
+                                      class="slds-button slds-button_brand"
+                                      onclick="{!c.SendEmail}"/> 
+                    <lightning:button label="Delete" 
+                                      class="slds-button slds-button_destructive"
+                                      onclick="{!c.deleteEmail}"/> 
+                    <lightning:button label="Cancel" 
+                                      class="slds-button slds-button_outline-brand"
+                                      
+                                      onclick="{!c.cancelEmail}"/>
+                </aura:if>
+                
+                
+            </fieldset>
+        </form>
+    </div>
+    
+</aura:component>

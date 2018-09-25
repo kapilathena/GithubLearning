@@ -1,0 +1,24 @@
+<aura:component controller="getOneAccount" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+	<aura:attribute name="cont" type="contact" default="{ 'sobjectType': 'Contact','Id': '','FirstName': '','LastName': '','Title': '','Phone':''}" />
+    <aura:attribute name="contid" type="string" />
+    <aura:handler Event="c:ContactListPageAppEvent" action="{!c.myAction}"/>
+    <aura:registerEvent type="c:temp" name="reg"/>
+    <aura:handler Event="c:temp" action="{!c.myAction}"/>
+    <div class="demo-only" style="padding: 0.5rem; background: rgb(22, 50, 92);">
+        <div class="slds-text-color_inverse slds-text-heading_large slds-text-align_center">Edit contact</div>
+    </div>
+     <div class="Create Contact">
+        <lightning:card iconName="action:new_contact" title="Edit Contact">
+            <div class="slds-p-horizontal--small">
+                <lightning:input aura:id="fname" label="First Name" value="{!v.cont.FirstName}" type ="String"/>
+                <lightning:input aura:id="lname" label="Last Name" value="{!v.cont.LastName}" type ="String" required="true"/>
+                <lightning:input aura:id="title" label="Title" value="{!v.cont.Title}" type ="String" required="true"/>
+                <lightning:input aura:id="phone" label="Phone" value="{!v.cont.Phone}" type ="String" required="true"/>
+                <br/>
+                <lightning:button label="Update Contact" variant="brand" onclick="{!c.updateCon}" />
+            </div>
+        </lightning:card>
+         
+        
+    </div>
+</aura:component>
