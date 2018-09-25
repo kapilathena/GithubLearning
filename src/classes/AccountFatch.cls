@@ -1,7 +1,10 @@
 public class AccountFatch {
-	//kjhgjhjghjfghkhjk
-	//jkjhkjhhfjegskghaerpibhu yporwhu byosirghgjghjj
-	
+
+	//kjhgjhj
+	//jkjhkjhhfjegskghaerpibhu yporwhu byosir
+	// without plugin.
+	// with plugin
+
 	@AuraEnabled
     public static list<contact> getData(){
 		
@@ -9,3 +12,4 @@ public class AccountFatch {
         
     }
 }
+  
