@@ -1,6 +1,7 @@
 public class AccountFatch {
 	//kjhgjhj
-	//jkjhkjh
+	//jkjhkjhhfjegskghaerpibhu yporwhu byosir
+	
 	@AuraEnabled
     public static list<contact> getData(){
 		
