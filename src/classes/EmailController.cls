@@ -1,4 +1,5 @@
 public class EmailController {
+	//Changed
     @AuraEnabled
     public static list<Email__c> fatchRecieved(string RId){
         system.debug(RId);
