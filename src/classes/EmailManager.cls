@@ -1,6 +1,6 @@
 public class EmailManager {
 
-    // Public method
+    // Public method chnaged.
     public static void sendMail(string sendTo,string subjectt,string bodyToSend) {
         // Create an email message object
         String address = sendTo;
