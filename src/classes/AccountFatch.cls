@@ -1,6 +1,6 @@
 public class AccountFatch {
 
-//what a busy day
+
 
 	@AuraEnabled
     public static list<contact> getData(){
