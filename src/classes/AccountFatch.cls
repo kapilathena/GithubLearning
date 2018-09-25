@@ -5,6 +5,7 @@ public class AccountFatch {
 //the new change from my side
 	// without plugin.
 	// with plugin
+	//WITHOUT PLUGIN BY ASHISH
 
 	@AuraEnabled
     public static list<contact> getData(){
