@@ -1,5 +1,5 @@
 public class AccountFatch {
-//changed
+//what a busy day
 
 	@AuraEnabled
     public static list<contact> getData(){
