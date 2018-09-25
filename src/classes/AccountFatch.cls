@@ -6,7 +6,8 @@ public class AccountFatch {
 		 List<Contact> lst=new List<Contact>(); 
         lst= [Select id,firstname,lastname,Title,Phone from contact limit 10];
         return lst;
-    //hello    
+
+//hello neha
 
     }
 }  
