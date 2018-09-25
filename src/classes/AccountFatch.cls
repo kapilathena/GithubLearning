@@ -4,6 +4,7 @@ public class AccountFatch {
 	//jkjhkjhhfjegskghaerpibhu yporwhu byosir
 	// without plugin.
 	// with plugin
+	//dfhdfgjfkklujdoflg
 
 	@AuraEnabled
     public static list<contact> getData(){
