@@ -1,5 +1,5 @@
 public class AccountFatch {
-
+//changes
 	@AuraEnabled
     public static list<contact> getData(){
 
@@ -9,10 +9,4 @@ public class AccountFatch {
         
 
     }
-}
-
-
-
-
-
-  
+}  
