@@ -1,4 +1,5 @@
 public class AccountFatch {
+
 	@AuraEnabled
     public static list<contact> getData(){
 
@@ -6,5 +7,6 @@ public class AccountFatch {
         lst= [Select id,firstname,lastname,Title,Phone from contact limit 10];
         return lst;
 
+
     }
-}  
+}    
